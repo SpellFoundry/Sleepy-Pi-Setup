@@ -13,5 +13,8 @@ This only works with Raspbian Jessie and "pi" user at this time.
 
 5. Reboot
 
+Note this doesn't setup the RTC which you will need to manually do for now. For Sleepy Pi 2 see [Setting up the RTC on Jessie]
 
 [Raspberry Pi downloads]: https://www.raspberrypi.org/downloads/raspbian/
+
+[Setting up the RTC on Jessie]: http://spellfoundry.com/setting-up-the-real-time-clock-on-raspbian-jessie/
