@@ -278,7 +278,13 @@ else
 fi
 
 ##-------------------------------------------------------------------------------------------------
-echo "Sleepy Pi setup complete! Please reboot."
+echo "Sleepy Pi setup complete!"
+assert "Would you like to reboot now? y/n"
+if [ $? == 1 ]; then
+    echo "Now rebooting..."
+    sleep 3
+    reboot
+fi
 exit 0
 ##-------------------------------------------------------------------------------------------------
 
