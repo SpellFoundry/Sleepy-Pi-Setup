@@ -68,7 +68,7 @@ echo 'Installing Arduino IDE...'
 program="arduino"
 condition=$(which $program 2>/dev/null | grep -v "not found" | wc -l)
 if [ $condition -eq 0 ] ; then
-    apt-get install arduino
+    apt-get install -y arduino
     # create the default sketchbook and libraries that the IDE would normally create on first run
     mkdir /home/pi/sketchbook
     mkdir /home/pi/sketchbook/libraries
