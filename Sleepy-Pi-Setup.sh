@@ -11,7 +11,12 @@ fi
 assert () {
     echo $1
     read ReadInput
-    return "$ReadInput" == "Y" || "$ReadInput" == "y"
+    echo "Answer $ReadInput"
+    if [[ "$ReadInput" == "Y" || "$ReadInput" == "y" ]]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
 # check if it is Jessie
