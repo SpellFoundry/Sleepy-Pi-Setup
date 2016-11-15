@@ -26,14 +26,14 @@ echo '==========================================================================
 ##Update and upgrade
 #sudo apt-get update && sudo apt-get upgrade -y
 
-## Start Installation
-echo 'Do you want to setup for a RPi 3 (Y) or Non-RPi 3 (n) ? (Y/n) '
-read RpiInput
-if [ "$RpiInput" == "Y" ]; then
-    echo "RPi 3 selected..."
+## Detecting Pi model
+RpiCPU=$(/bin/cat /proc/cpuinfo | /bin/grep Revision | /usr/bin/cut -d ':' -f 2 | /bin/sed -e "s/ //g")
+if [ "$RpiCPU" == "a22082" ]; then
+    echo "RapberryPi 3 detected"
     RPi3=true
 else
-    echo "Non-Rpi 3 (other Rpi) selected..."
+    # RaspberryPi 2 or 1... let's say it's 2...
+    echo "RapberryPi 2 detected"
     RPi3=false
 fi
 
