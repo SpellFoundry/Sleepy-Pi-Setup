@@ -8,6 +8,12 @@ if [[ $EUID -ne 0 ]]; then
   	exit 1
 fi
 
+assert () {
+    echo $1
+    read ReadInput
+    return "$ReadInput" == "Y" || "$ReadInput" == "y"
+}
+
 # check if it is Jessie
 osInfo=$(cat /etc/os-release)
 if [[ $osInfo == *"jessie"* ]]; then
@@ -37,9 +43,8 @@ else
     RPi3=false
 fi
 
-echo 'Begin Installation ? (Y/n) '
-read ReadyInput
-if [ "$ReadyInput" == "Y" ]; then
+assert 'Begin Installation ? (Y/n) '
+if [ $? == 1 ]; then
     echo "Beginning installation..."
 else
     echo "Aborting installation"
