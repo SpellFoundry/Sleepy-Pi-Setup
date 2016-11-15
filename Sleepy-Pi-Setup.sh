@@ -8,6 +8,17 @@ if [[ $EUID -ne 0 ]]; then
   	exit 1
 fi
 
+assert () {
+    echo $1
+    read ReadInput
+    echo "Answer $ReadInput"
+    if [[ "$ReadInput" == "Y" || "$ReadInput" == "y" ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 # check if it is Jessie
 osInfo=$(cat /etc/os-release)
 if [[ $osInfo == *"jessie"* ]]; then
@@ -26,20 +37,19 @@ echo '==========================================================================
 ##Update and upgrade
 #sudo apt-get update && sudo apt-get upgrade -y
 
-## Start Installation
-echo 'Do you want to setup for a RPi 3 (Y) or Non-RPi 3 (n) ? (Y/n) '
-read RpiInput
-if [ "$RpiInput" == "Y" ]; then
-    echo "RPi 3 selected..."
+## Detecting Pi model
+RpiCPU=$(/bin/cat /proc/cpuinfo | /bin/grep Revision | /usr/bin/cut -d ':' -f 2 | /bin/sed -e "s/ //g")
+if [ "$RpiCPU" == "a22082" ]; then
+    echo "RapberryPi 3 detected"
     RPi3=true
 else
-    echo "Non-Rpi 3 (other Rpi) selected..."
+    # RaspberryPi 2 or 1... let's say it's 2...
+    echo "RapberryPi 2 detected"
     RPi3=false
 fi
 
-echo 'Begin Installation ? (Y/n) '
-read ReadyInput
-if [ "$ReadyInput" == "Y" ]; then
+assert 'Begin Installation ? (Y/n) '
+if [ $? == 1 ]; then
     echo "Beginning installation..."
 else
     echo "Aborting installation"
@@ -63,7 +73,7 @@ echo 'Installing Arduino IDE...'
 program="arduino"
 condition=$(which $program 2>/dev/null | grep -v "not found" | wc -l)
 if [ $condition -eq 0 ] ; then
-    apt-get install arduino
+    apt-get install -y arduino
     # create the default sketchbook and libraries that the IDE would normally create on first run
     mkdir /home/pi/sketchbook
     mkdir /home/pi/sketchbook/libraries
@@ -273,7 +283,13 @@ else
 fi
 
 ##-------------------------------------------------------------------------------------------------
-echo "Sleepy Pi setup complete! Please reboot."
+echo "Sleepy Pi setup complete!"
+assert "Would you like to reboot now? y/n"
+if [ $? == 1 ]; then
+    echo "Now rebooting..."
+    sleep 3
+    reboot
+fi
 exit 0
 ##-------------------------------------------------------------------------------------------------
 
