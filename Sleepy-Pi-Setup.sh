@@ -145,7 +145,7 @@ if grep -q 'shutdowncheck.py' /etc/rc.local; then
 else
     [ ! -d /home/pi/bin  ] && mkdir /home/pi/bin
     [ ! -d /home/pi/bin/SleepyPi  ] && mkdir /home/pi/bin/SleepyPi
-    wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/shutdowncheck.py
+    wget https://raw.githubusercontent.com/PhilipMathieu/Sleepy-Pi-Setup/master/shutdowncheck.py
     mv -f shutdowncheck.py /home/pi/bin/SleepyPi
     sed -i '/exit 0/i python /home/pi/bin/SleepyPi/shutdowncheck.py &' /etc/rc.local
     # echo "python /home/pi/bin/SleepyPi/shutdowncheck.py &" | sudo tee -a /etc/rc.local
