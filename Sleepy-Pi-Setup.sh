@@ -82,11 +82,20 @@ if grep -q 'enable_uart=1' /boot/config.txt; then
 else
     echo 'enable_uart=1' | sudo tee -a /boot/config.txt
 fi
-if grep -q 'core_freq=250' /boot/config.txt; then
-    echo 'The frequency of GPU processor core is set to 250MHz already - skipping'
-else
-    echo 'core_freq=250' | sudo tee -a /boot/config.txt
-fi
+if [ $RPi3 != true ]; then
+    if grep -q 'core_freq=400' /boot/config.txt; then
+        echo 'The frequency of GPU processor core is set to 400MHz already - skipping'
+    else
+        echo 'core_freq=400' | sudo tee -a /boot/config.txt
+        fi
+    else
+        if grep -q 'core_freq=250' /boot/config.txt; then
+            echo 'The frequency of GPU processor core is set to 250MHz already - skipping'
+        else
+            echo 'core_freq=250' | sudo tee -a /boot/config.txt
+            fi
+        fi
+
 
 ## Disable Serial login
 echo 'Disabling Serial Login...'
