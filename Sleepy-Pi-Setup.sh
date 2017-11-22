@@ -83,14 +83,14 @@ else
     echo 'enable_uart=1' | sudo tee -a /boot/config.txt
 fi
 if [ $RPi3 = true ]; then
-    if grep -q 'core_freq=400' /boot/config.txt; then
+    if grep -q '^core_freq=400' /boot/config.txt; then
         echo 'The frequency of GPU processor core is set to 400MHz already - skipping'
     else
         echo 'Setting core_freq=400 in /boot/config.txt'
         sed -i 's/^core_freq=.*/core_freq=400/g' /boot/config.txt
         fi
     else
-        if grep -q 'core_freq=250' /boot/config.txt; then
+        if grep -q '^core_freq=250' /boot/config.txt; then
             echo 'The frequency of GPU processor core is set to 250MHz already - skipping'
         else
             echo 'Setting core_freq=250 in /boot/config.txt'
