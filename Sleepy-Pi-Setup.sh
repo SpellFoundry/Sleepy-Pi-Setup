@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -eu
 
 # trap "set +x; sleep 5; set -x" DEBUG
 
@@ -65,13 +67,14 @@ echo 'Installing Arduino IDE...'
 program="arduino"
 condition=$(which $program 2>/dev/null | grep -v "not found" | wc -l)
 if [ $condition -eq 0 ] ; then
-    apt-get install arduino
+    apt-get install -y arduino
     # create the default sketchbook and libraries that the IDE would normally create on first run
     mkdir /home/pi/sketchbook
     mkdir /home/pi/sketchbook/libraries
 else
     echo "Arduino IDE is already installed - skipping"
 fi
+
 
 ##-------------------------------------------------------------------------------------------------
 
@@ -145,8 +148,8 @@ cd ~
 if grep -q 'shutdowncheck.py' /etc/rc.local; then
     echo 'shutdowncheck.py is already setup - skipping...'
 else
-    [ ! -d /home/pi/bin  ] && mkdir /home/pi/bin
-    [ ! -d /home/pi/bin/SleepyPi  ] && mkdir /home/pi/bin/SleepyPi
+    mkdir -p /home/pi/bin
+    mkdir -p /home/pi/bin/SleepyPi
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/shutdowncheck.py
     mv -f shutdowncheck.py /home/pi/bin/SleepyPi
     sed -i '/exit 0/i python /home/pi/bin/SleepyPi/shutdowncheck.py &' /etc/rc.local
@@ -158,25 +161,11 @@ fi
 ## Adding the Sleepy Pi to the Arduino environment
 echo 'Adding the Sleepy Pi to the Arduino environment...'
 # ...setup sketchbook
-if [ -d "/home/pi/sketchbook" ]
-then
-    echo "sketchbook exists - skipping..."
-else
-    mkdir /home/pi/sketchbook
-fi
+mkdir -p /home/pi/sketchbook
 # ...setup sketchbook/libraries
-if [ -d "/home/pi/sketchbook/libraries" ]
-then
-    echo "sketchbook/libraries exists - skipping..."
-else
-    mkdir /home/pi/sketchbook/libraries
-fi
+mkdir -p /home/pi/sketchbook/libraries
 # .../sketchbook/hardware
-if [ -d "/home/pi/sketchbook/hardware" ]; then
-    echo "sketchbook/hardware exists - skipping..."
-else
-    mkdir /home/pi/sketchbook/hardware 
-fi
+mkdir -p /home/pi/sketchbook/hardware
 # .../sketchbook/hardware/sleepy_pi2
 if [ -d "/home/pi/sketchbook/hardware/sleepy_pi2" ]; then
     echo "sketchbook/hardware/sleepy_pi2 exists - skipping..."
@@ -198,15 +187,15 @@ fi
 ## Setup the Sleepy Pi Libraries
 echo 'Setting up the Sleepy Pi Libraries...'
 cd /home/pi/sketchbook/libraries/
-if [ -d "/home/pi/sketchbook/libraries/sleepy_pi2" ]; then
-    echo "sleepy_pi2 Library exists - skipping..."
+if [ -d "/home/pi/sketchbook/libraries/SleepyPi2" ]; then
+    echo "SleepyPi2 Library exists - skipping..."
     # could do a git pull here?
 else
     echo "Installing SleepyPi 2 Library..."
     git clone https://github.com/SpellFoundry/SleepyPi2.git
 fi
-if [ -d "/home/pi/sketchbook/libraries/sleepy_pi" ]; then
-    echo "sleepy_pi Library exists - skipping..."
+if [ -d "/home/pi/sketchbook/libraries/SleepyPi" ]; then
+    echo "SleepyPi Library exists - skipping..."
     # could do a git pull here?
 else
     echo "Installing SleepyPi Library..."
