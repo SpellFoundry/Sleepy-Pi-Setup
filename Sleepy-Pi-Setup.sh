@@ -10,17 +10,7 @@ if [[ $EUID -ne 0 ]]; then
   	exit 1
 fi
 
-assert () {
-    echo $1
-    read ReadInput
-    if [[ "$ReadInput" == "Y" || "$ReadInput" == "y" ]]; then
-        return 1
-    else
-        return 0
-    fi
-}
-
-# check if it is Jessie
+# check if it is Jessie or Stretch
 osInfo=$(cat /etc/os-release)
 if [[ $osInfo == *"jessie"* ]]; then
     Jessie=true
@@ -33,7 +23,7 @@ fi
 
 echo '================================================================================ '
 echo '|                                                                               |'
-echo '|                   Sleepy Pi Installation Script - Jessie or Stretch                      |'
+echo '|                   Sleepy Pi Installation Script - Jessie or Stretch           |'
 echo '|                                                                               |'
 echo '================================================================================ '
 
@@ -42,7 +32,13 @@ echo '==========================================================================
 
 ## Detecting Pi model
 RpiCPU=$(/bin/cat /proc/cpuinfo | /bin/grep Revision | /usr/bin/cut -d ':' -f 2 | /bin/sed -e "s/ //g")
-if [ "$RpiCPU" == "a22082" ]; then
+if [ "$RpiCPU" == "a02082" ]; then
+    echo "RapberryPi 3 detected"
+    RPi3=true
+elif [ "$RpiCPU" == "a22082" ]; then
+    echo "RapberryPi 3 detected"
+    RPi3=true
+elif [ "$RpiCPU" == "a32082" ]; then
     echo "RapberryPi 3 detected"
     RPi3=true
 else
@@ -51,8 +47,9 @@ else
     RPi3=false
 fi
 
-assert 'Begin Installation ? (Y/n) '
-if [ $? == 1 ]; then
+echo 'Begin Installation ? (Y/n) '
+read ReadyInput
+if [[ "$ReadyInput" == "Y" || "$ReadyInput" == "y" ]]; then
     echo "Beginning installation..."
 else
     echo "Aborting installation"
@@ -274,8 +271,9 @@ fi
 
 ##-------------------------------------------------------------------------------------------------
 echo "Sleepy Pi setup complete!"
-assert "Would you like to reboot now? y/n"
-if [ $? == 1 ]; then
+echo  "Would you like to reboot now? y/n"
+read RebootInput
+if [ "$RebootInput" == "y" ]; then
     echo "Now rebooting..."
     sleep 3
     reboot
