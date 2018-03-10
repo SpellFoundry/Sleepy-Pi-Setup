@@ -12,14 +12,16 @@ fi
 osInfo=$(cat /etc/os-release)
 if [[ $osInfo == *"jessie"* ]]; then
     Jessie=true
+elif [[ $osInfo == *"stretch"* ]] ; then
+   Stretch=true
 else
-    echo "This script only works on Jessie at this time"
+    echo "This script only works on Jessie or Stretch at this time"
     exit 1
 fi
 
 echo '================================================================================ '
 echo '|                                                                               |'
-echo '|                   Sleepy Pi Installation Script - Jessie                      |'
+echo '|                   Sleepy Pi Installation Script - Jessie or Stretch                      |'
 echo '|                                                                               |'
 echo '================================================================================ '
 
