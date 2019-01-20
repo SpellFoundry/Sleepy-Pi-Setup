@@ -41,6 +41,9 @@ elif [ "$RpiCPU" == "a22082" ]; then
 elif [ "$RpiCPU" == "a32082" ]; then
     echo "RapberryPi 3 detected"
     RPi3=true
+elif [ "$RpiCPU" == "a020d3" ]; then
+    echo "RapberryPi 3 detected"
+    RPi3=true
 else
     # RaspberryPi 2 or 1... let's say it's 2...
     echo "Non-RapberryPi 3 detected"
