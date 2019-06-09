@@ -130,7 +130,7 @@ echo 'Link Serial Port to Arduino IDE...'
 if [ $RPi3 != true ]; then
     # Anything other than Rpi 3
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/80-sleepypi.rules
-    mv /home/pi/80-sleepypi.rules /etc/udev/rules.d/
+    mv 80-sleepypi.rules /etc/udev/rules.d/
 fi
 # Note: On Rpi3 GPIO serial port defaults to ttyS0 which is what we want
 
