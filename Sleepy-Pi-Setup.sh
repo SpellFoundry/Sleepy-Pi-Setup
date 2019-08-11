@@ -14,46 +14,61 @@ fi
 osInfo=$(cat /etc/os-release)
 if [[ $osInfo == *"jessie"* ]]; then
     Jessie=true
-elif [[ $osInfo == *"stretch"* ]] ; then
+elif [[ $osInfo == *"stretch"* ]]; then
    Stretch=true
+elif [[ $osInfo == *"buster"* ]]; then
+   Buster=true
 else
-    echo "This script only works on Jessie or Stretch at this time"
+    echo "This script only works on Jessie, Stretch or Buster at this time"
     exit 1
 fi
 
 echo '================================================================================ '
 echo '|                                                                               |'
-echo '|                   Sleepy Pi Installation Script - Jessie or Stretch           |'
+echo '|      Sleepy Pi Installation Script - Jessie, Stretch or Buster                 |'
 echo '|                                                                               |'
 echo '================================================================================ '
 
-##Update and upgrade
-#sudo apt-get update && sudo apt-get upgrade -y
+## Update and upgrade
+# sudo apt-get update && sudo apt-get upgrade -y
 
 ## Detecting Pi model
+## list available https://elinux.org/Rpi_HardwareHistory
+RPi3=false
+RPi4=false
 RpiCPU=$(/bin/cat /proc/cpuinfo | /bin/grep Revision | /usr/bin/cut -d ':' -f 2 | /bin/sed -e "s/ //g")
 if [ "$RpiCPU" == "a02082" ]; then
-    echo "RapberryPi 3 detected"
+    echo "Rapberry Pi 3 detected"
     RPi3=true
 elif [ "$RpiCPU" == "a22082" ]; then
-    echo "RapberryPi 3 detected"
+    echo "Rapberry Pi 3 B detected"
     RPi3=true
 elif [ "$RpiCPU" == "a32082" ]; then
-    echo "RapberryPi 3 detected"
+    echo "Rapberry Pi 3 B detected"
     RPi3=true
 elif [ "$RpiCPU" == "a020d3" ]; then
-    echo "RapberryPi 3 B+ detected"
+    echo "Rapberry Pi 3 B+ detected"
     RPi3=true
 elif [ "$RpiCPU" == "9020e0" ]; then
-    echo "RapberryPi 3 A+ detected"
+    echo "Rapberry Pi 3 A+ detected"
     RPi3=true
 elif [ "$RpiCPU" == "9000c1" ]; then
-    echo "RapberryPi Zero W detected"
+    echo "Rapberry Pi Zero W detected"
     RPi3=true
+elif [ "$RpiCPU" == "a03111" ]; then
+    echo "Raspberry Pi 4 1GB detected"
+    RPi4=true
+elif [ "$RPiCPU" == "b03111" ]; then
+    echo "Raspberry Pi 4 2GB detected"
+    RPi4=true
+elif [ "$RPiCPU" == "c03111" ]; then
+    echo "Raspberry Pi 4 4GB detected"
+    RPi4=true
 else
     # RaspberryPi 2 or 1... let's say it's 2...
-    echo "Non-RapberryPi 3 detected"
+    echo "Non-RapberryPi 3 or 4 detected"
     RPi3=false
+    RPi4=false
 fi
 
 echo 'Begin Installation ? (Y/n) '
@@ -110,12 +125,13 @@ fi
 
 ## Disable Serial login
 echo 'Disabling Serial Login...'
-if [ $RPi3 != true ]; then
-    # Non-RPi3
+set +x
+if [ $RPi3 != true ] || [ $RPi4 != true ]; then
+    # Non-RPi3 or 4
     systemctl stop serial-getty@ttyAMA0.service
     systemctl disable serial-getty@ttyAMA0.service
 else
-    # Rpi 3
+    # Rpi 3 or 4
     systemctl stop serial-getty@ttyS0.service
     systemctl disable serial-getty@ttyS0.service
 fi
@@ -127,12 +143,12 @@ sed -i'bk' -e's/console=serial0,115200.//'  /boot/cmdline.txt
 
 ## Link the Serial Port to the Arduino IDE
 echo 'Link Serial Port to Arduino IDE...'
-if [ $RPi3 != true ]; then
+if [ $RPi3 != true ] || [ $RPi4 != true ]; then
     # Anything other than Rpi 3
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/80-sleepypi.rules
     mv /home/pi/80-sleepypi.rules /etc/udev/rules.d/
 fi
-# Note: On Rpi3 GPIO serial port defaults to ttyS0 which is what we want
+# Note: On Rpi3 or 4 GPIO serial port defaults to ttyS0 which is what we want
 
 ##-------------------------------------------------------------------------------------------------
 
@@ -280,9 +296,9 @@ fi
 
 ##-------------------------------------------------------------------------------------------------
 echo "Sleepy Pi setup complete!"
-echo  "Would you like to reboot now? y/n"
+echo  "Would you like to reboot now? Y/n"
 read RebootInput
-if [ "$RebootInput" == "y" ]; then
+if [ "$RebootInput" == "Y" ]; then
     echo "Now rebooting..."
     sleep 3
     reboot
