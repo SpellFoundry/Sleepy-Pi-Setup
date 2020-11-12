@@ -58,15 +58,18 @@ elif [ "$RpiCPU" == "9000c1" ]; then
 elif [ "$RpiCPU" == "a03111" ]; then
     echo "Raspberry Pi 4 1GB detected"
     RPi4=true
-elif [ "$RpiCPU" == "b03111" ]; then
+elif [ "$RpiCPU" == "b03111" ] || [ "$RpiCPU" == "b03112" ]; then
     echo "Raspberry Pi 4 2GB detected"
     RPi4=true
-elif [ "$RpiCPU" == "c03111" ]; then
+elif [ "$RpiCPU" == "c03111" ] || [ "$RpiCPU" == "c03112" ]; then
     echo "Raspberry Pi 4 4GB detected"
+    RPi4=true
+elif [ "$RpiCPU" == "d03114" ]; then
+    echo "Raspberry Pi 4 8GB detected"
     RPi4=true
 else
     # RaspberryPi 2 or 1... let's say it's 2...
-    echo "Non-RapberryPi 3 or 4 detected"
+    echo "Non-Raspberry Pi 3 or 4 detected"
     RPi3=false
     RPi4=false
 fi
