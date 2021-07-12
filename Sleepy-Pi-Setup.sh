@@ -38,22 +38,22 @@ RPi3=false
 RPi4=false
 RpiCPU=$(/bin/cat /proc/cpuinfo | /bin/grep Revision | /usr/bin/cut -d ':' -f 2 | /bin/sed -e "s/ //g")
 if [ "$RpiCPU" == "a02082" ]; then
-    echo "Rapberry Pi 3 detected"
+    echo "Raspberry Pi 3 detected"
     RPi3=true
 elif [ "$RpiCPU" == "a22082" ]; then
-    echo "Rapberry Pi 3 B detected"
+    echo "Raspberry Pi 3 B detected"
     RPi3=true
 elif [ "$RpiCPU" == "a32082" ]; then
-    echo "Rapberry Pi 3 B detected"
+    echo "Raspberry Pi 3 B detected"
     RPi3=true
 elif [ "$RpiCPU" == "a020d3" ]; then
-    echo "Rapberry Pi 3 B+ detected"
+    echo "Raspberry Pi 3 B+ detected"
     RPi3=true
 elif [ "$RpiCPU" == "9020e0" ]; then
-    echo "Rapberry Pi 3 A+ detected"
+    echo "Raspberry Pi 3 A+ detected"
     RPi3=true
 elif [ "$RpiCPU" == "9000c1" ]; then
-    echo "Rapberry Pi Zero W detected"
+    echo "Raspberry Pi Zero W detected"
     RPi3=true
 elif [ "$RpiCPU" == "a03111" ]; then
     echo "Raspberry Pi 4 1GB detected"
@@ -64,9 +64,12 @@ elif [ "$RpiCPU" == "b03111" ]; then
 elif [ "$RpiCPU" == "c03111" ]; then
     echo "Raspberry Pi 4 4GB detected"
     RPi4=true
+elif [ "$RpiCPU" == "d03114" ]; then
+    echo "Raspberry Pi 4 8GB detected"
+    RPi4=true
 else
     # RaspberryPi 2 or 1... let's say it's 2...
-    echo "Non-RapberryPi 3 or 4 detected"
+    echo "Non-RaspberryPi 3 or 4 detected"
     RPi3=false
     RPi4=false
 fi
