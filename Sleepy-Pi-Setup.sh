@@ -183,6 +183,7 @@ else
     mkdir -p /home/pi/bin/SleepyPi
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/shutdowncheck.py
     mv -f shutdowncheck.py /home/pi/bin/SleepyPi
+    sed -i '/"exit 0"/g' /etc/rc.local
     sed -i '/exit 0/i python /home/pi/bin/SleepyPi/shutdowncheck.py &' /etc/rc.local
     # echo "python /home/pi/bin/SleepyPi/shutdowncheck.py &" | sudo tee -a /etc/rc.local
 fi
