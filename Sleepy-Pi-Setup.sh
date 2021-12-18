@@ -10,7 +10,7 @@ if [[ $EUID -ne 0 ]]; then
   	exit 1
 fi
 
-# check if it is Jessie or Stretch
+# check if the OS
 osInfo=$(cat /etc/os-release)
 if [[ $osInfo == *"jessie"* ]]; then
     Jessie=true
@@ -18,14 +18,16 @@ elif [[ $osInfo == *"stretch"* ]]; then
    Stretch=true
 elif [[ $osInfo == *"buster"* ]]; then
    Buster=true
+elif [[ $osInfo == *"bullseye"* ]]; then
+   Bullseye=true
 else
-    echo "This script only works on Jessie, Stretch or Buster at this time"
+    echo "This script only works on Jessie, Stretch, Buster or Bullseye at this time"
     exit 1
 fi
 
 echo '================================================================================ '
 echo '|                                                                               |'
-echo '|      Sleepy Pi Installation Script - Jessie, Stretch or Buster                 |'
+echo '|      Sleepy Pi Installation Script - Jessie, Stretch, Buster or Bullseye      |'
 echo '|                                                                               |'
 echo '================================================================================ '
 
@@ -61,12 +63,30 @@ elif [ "$RpiCPU" == "a03111" ]; then
 elif [ "$RpiCPU" == "b03111" ]; then
     echo "Raspberry Pi 4 2GB detected"
     RPi4=true
+elif [ "$RpiCPU" == "b03112" ]; then
+    echo "Raspberry Pi 4 2GB detected"
+    RPi4=true
+elif [ "$RpiCPU" == "b03114" ]; then
+    echo "Raspberry Pi 4 2GB detected"
+    RPi4=true
 elif [ "$RpiCPU" == "c03111" ]; then
     echo "Raspberry Pi 4 4GB detected"
     RPi4=true
+elif [ "$RpiCPU" == "c03112" ]; then
+    echo "Raspberry Pi 4 4GB detected"
+    RPi4=true
+elif [ "$RpiCPU" == "c03114" ]; then
+    echo "Raspberry Pi 4 4GB detected"
+    RPi4=true
+ elif [ "$RpiCPU" == "d03114" ]; then
+    echo "Raspberry Pi 4 8GB detected"
+    RPi4=true  
+ elif [ "$RpiCPU" == "902120" ]; then
+    echo "Raspberry Pi Zero 2W detected"
+    RPi3=true    
 else
     # RaspberryPi 2 or 1... let's say it's 2...
-    echo "Non-RapberryPi 3 or 4 detected"
+    echo "Non-RapberryPi 3 or 4 or Zero families detected"
     RPi3=false
     RPi4=false
 fi
