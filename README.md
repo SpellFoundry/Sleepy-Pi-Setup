@@ -1,7 +1,7 @@
 # Sleepy-Pi-Setup.sh
 
 
-Currently this works with Raspbian Jessie, Stretch or Buster and "pi" user at this time. 
+Currently this works with Raspbian Jessie, Stretch, Buster and Bookworm, with any user name. 
 
 1. To setup from a fresh Raspbian image, first download a full Jessie image from [Raspberry Pi downloads] and flash it onto an SD Card.
 
